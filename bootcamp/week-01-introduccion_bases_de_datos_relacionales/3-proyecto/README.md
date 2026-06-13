@@ -17,7 +17,7 @@ principales de tu sistema y harás tus primeras consultas `SELECT`.
 > - **Mockaroo** → [mockaroo.com](https://mockaroo.com) — genera hasta 1.000 INSERT en segundos
 > - **Copilot / ChatGPT** → pídele: *"Dame 15 INSERT INTO realistas para una tabla SQLite llamada `X` con columnas A, B, C"*
 >
-> 📖 Guía completa: [`docs/seed-datos.md`](../../../../docs/seed-datos.md)
+> 📖 Guía completa: [`docs/seed-datos.md`](../../../../docs/seed-datos.md) 
 
 ---
 

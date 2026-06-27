@@ -1,53 +1,47 @@
 -- ============================================
 -- PROYECTO SEMANAL: Funciones de Agregación
 -- Semana 06 — COUNT, SUM, AVG, GROUP BY, HAVING
+-- Dominio: Club Social
 -- ============================================
-
--- NOTA: Usa el esquema de tu Semana 03. Adapta nombres al dominio.
 
 -- ============================================
 -- REPORTE 1: Totales globales
 -- ============================================
--- TODO: Cuenta todos los registros y calcula suma/promedio
---       de la columna numérica más relevante de tu dominio
--- SELECT
---     COUNT(*)     AS total_registros,
---     SUM(col_num) AS suma_total,
---     AVG(col_num) AS promedio
--- FROM tu_tabla;
 
+SELECT
+    COUNT(*) AS total_registros,
+    SUM(amount) AS suma_total,
+    AVG(amount) AS promedio
+FROM fees;
 
 -- ============================================
 -- REPORTE 2: Extremos
 -- ============================================
--- TODO: Obtén el valor mínimo y máximo de la columna numérica
--- SELECT
---     MIN(col_num) AS minimo,
---     MAX(col_num) AS maximo
--- FROM tu_tabla;
 
+SELECT
+    MIN(amount) AS minimo,
+    MAX(amount) AS maximo
+FROM fees;
 
 -- ============================================
 -- REPORTE 3: Subtotales por categoría (GROUP BY)
 -- ============================================
--- TODO: Agrupa por la columna de categoría/tipo principal de tu dominio
---       y calcula COUNT + AVG o SUM para cada grupo
--- SELECT
---     columna_categoria,
---     COUNT(*)     AS total,
---     AVG(col_num) AS promedio
--- FROM   tu_tabla
--- GROUP BY columna_categoria
--- ORDER BY total DESC;
 
+SELECT
+    member_id,
+    COUNT(*) AS total,
+    AVG(amount) AS promedio
+FROM fees
+GROUP BY member_id
+ORDER BY total DESC;
 
 -- ============================================
 -- REPORTE 4: Filtro de grupos (HAVING)
 -- ============================================
--- TODO: Muestra solo los grupos que superen un umbral de negocio
--- SELECT
---     columna_categoria,
---     COUNT(*) AS total
--- FROM   tu_tabla
--- GROUP BY columna_categoria
--- HAVING COUNT(*) > umbral;
+
+SELECT
+    member_id,
+    COUNT(*) AS total
+FROM fees
+GROUP BY member_id
+HAVING COUNT(*) > 1;

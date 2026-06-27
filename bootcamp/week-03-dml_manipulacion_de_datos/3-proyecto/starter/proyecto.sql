@@ -1,77 +1,119 @@
 -- ============================================
 -- PROYECTO SEMANAL: DML — Manipulación de Datos
 -- Semana 03 — INSERT INTO, UPDATE, DELETE
+-- Dominio: Club Social
 -- ============================================
 
--- NOTA PARA EL APRENDIZ:
--- Adapta este esquema a tu dominio asignado.
--- Ejemplos:
---   Biblioteca  → books, members, loans
---   Farmacia    → medicines, suppliers, sales
---   Gimnasio    → members, plans, attendance
---   Restaurante → dishes, tables, orders
+-- ============================================
+-- RECREACIÓN DEL ESQUEMA (Semana 02)
+-- ============================================
 
--- Reutiliza el setup.sql de la Semana 02 o recrea las tablas aquí:
+DROP TABLE IF EXISTS fees;
+DROP TABLE IF EXISTS facilities;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS members;
 
--- TODO: Pega o recrea tu esquema DDL de la Semana 02
---       (DROP TABLE IF EXISTS + CREATE TABLE)
+CREATE TABLE members (
+    id              INTEGER PRIMARY KEY,
+    full_name       TEXT NOT NULL,
+    email           TEXT NOT NULL UNIQUE,
+    membership_type TEXT NOT NULL DEFAULT 'Regular',
+    age             INTEGER CHECK(age >= 18),
+    is_active       INTEGER NOT NULL DEFAULT 1
+);
 
+CREATE TABLE events (
+    id              INTEGER PRIMARY KEY,
+    event_name      TEXT NOT NULL,
+    event_date      TEXT NOT NULL,
+    capacity        INTEGER CHECK(capacity > 0),
+    location        TEXT NOT NULL
+);
+
+CREATE TABLE fees (
+    id              INTEGER PRIMARY KEY,
+    member_id       INTEGER NOT NULL,
+    amount          REAL NOT NULL CHECK(amount > 0),
+    payment_date    TEXT,
+    FOREIGN KEY (member_id)
+        REFERENCES members(id)
+);
+
+CREATE TABLE facilities (
+    id              INTEGER PRIMARY KEY,
+    facility_name   TEXT NOT NULL UNIQUE,
+    capacity        INTEGER CHECK(capacity > 0),
+    available       INTEGER NOT NULL DEFAULT 1
+);
 
 -- ============================================
 -- PARTE 1: INSERT INTO
 -- ============================================
 
--- TODO: Inserta al menos 5 filas en la tabla padre de tu dominio
-INSERT INTO items (id, name)   -- TODO: Renombrar y expandir columnas
+INSERT INTO members
+(id, full_name, email, membership_type, age)
 VALUES
-    -- (1, 'Ejemplo A'),
-    -- (2, 'Ejemplo B'),
-    -- (3, 'Ejemplo C'),
-    -- (4, 'Ejemplo D'),
-    -- (5, 'Ejemplo E');
-    ;
+    (1, 'Juan Perez', 'juan@gmail.com', 'Premium', 25),
+    (2, 'Maria Gomez', 'maria@gmail.com', 'Regular', 30),
+    (3, 'Carlos Ruiz', 'carlos@gmail.com', 'Premium', 28),
+    (4, 'Ana Torres', 'ana@gmail.com', 'Regular', 22),
+    (5, 'Pedro Silva', 'pedro@gmail.com', 'VIP', 35);
 
--- TODO: Inserta al menos 5 filas en la tabla hijo respetando FKs
--- INSERT INTO ...
-
+INSERT INTO fees
+(id, member_id, amount, payment_date)
+VALUES
+    (1, 1, 50000, '2026-06-01'),
+    (2, 2, 40000, '2026-06-02'),
+    (3, 3, 50000, '2026-06-03'),
+    (4, 4, 40000, '2026-06-04'),
+    (5, 5, 70000, '2026-06-05');
 
 -- ============================================
 -- PARTE 2: UPDATE
 -- ============================================
 
--- TODO: Actualiza una columna de una fila específica (por PK)
--- UPDATE ...
--- SET    columna = nuevo_valor
--- WHERE  id = ?;
+-- Actualizar una columna por PK
 
--- TODO: Actualiza múltiples columnas de una fila
--- UPDATE ...
--- SET    col1 = val1,
---        col2 = val2
--- WHERE  id = ?;
+UPDATE members
+SET membership_type = 'VIP'
+WHERE id = 1;
 
--- TODO: Actualiza múltiples filas con una condición de negocio
--- UPDATE ...
--- SET    columna = ...
--- WHERE  condicion = ?;
+-- Actualizar múltiples columnas
 
+UPDATE members
+SET full_name = 'Maria Fernanda Gomez',
+    age = 31
+WHERE id = 2;
+
+-- Actualizar múltiples filas
+
+UPDATE members
+SET is_active = 0
+WHERE age < 25;
 
 -- ============================================
 -- PARTE 3: DELETE SEGURO
 -- ============================================
 
--- TODO: Verifica con SELECT qué filas serán eliminadas
--- SELECT id, nombre FROM ... WHERE condicion;
+-- Verificar filas a eliminar
 
--- TODO: Elimina esas filas con el mismo WHERE
--- DELETE FROM ...
--- WHERE  condicion;
+SELECT id, full_name
+FROM members
+WHERE is_active = 0;
 
+-- Eliminar las filas verificadas
+
+DELETE FROM members
+WHERE is_active = 0;
 
 -- ============================================
 -- VERIFICACIÓN FINAL
 -- ============================================
 
--- TODO: Muestra el estado final de ambas tablas
--- SELECT * FROM tabla_padre ORDER BY id;
--- SELECT * FROM tabla_hijo  ORDER BY id;
+SELECT *
+FROM members
+ORDER BY id;
+
+SELECT *
+FROM fees
+ORDER BY id;

@@ -1,66 +1,73 @@
 -- ============================================
 -- PROYECTO SEMANAL: DDL de tu Dominio
 -- Semana 02 — DDL: Diseño de Esquemas
+-- Dominio: Club Social
 -- ============================================
-
--- NOTA PARA EL APRENDIZ:
--- Adapta este esquema al dominio que te fue asignado.
--- Renombra tablas y columnas según corresponda.
 
 -- ============================================
 -- LIMPIEZA: eliminar tablas si existen
 -- ============================================
 
--- TODO: Agregar DROP TABLE IF EXISTS para cada tabla de tu dominio
--- Ejemplo:
--- DROP TABLE IF EXISTS items;
--- DROP TABLE IF EXISTS entities;
+DROP TABLE IF EXISTS fees;
+DROP TABLE IF EXISTS facilities;
+DROP TABLE IF EXISTS events;
+DROP TABLE IF EXISTS members;
 
 -- ============================================
 -- TABLA 1: Entidad principal de tu dominio
 -- ============================================
 
--- TODO: Renombrar 'items' según tu dominio
--- TODO: Definir columnas con tipos y constraints apropiados
-CREATE TABLE IF NOT EXISTS items (
-    id          INTEGER PRIMARY KEY,
-    name        TEXT    NOT NULL,
-    -- TODO: Agregar columna con DEFAULT
-    -- TODO: Agregar columna con CHECK
-    -- TODO: Agregar columna con UNIQUE si aplica
-    is_active   INTEGER NOT NULL DEFAULT 1
+CREATE TABLE IF NOT EXISTS members (
+    id              INTEGER PRIMARY KEY,
+    full_name       TEXT    NOT NULL,
+    email           TEXT    NOT NULL UNIQUE,
+    membership_type TEXT    NOT NULL DEFAULT 'Regular',
+    age             INTEGER CHECK(age >= 18),
+    is_active       INTEGER NOT NULL DEFAULT 1
 );
 
 -- ============================================
 -- TABLA 2: Segunda entidad de tu dominio
 -- ============================================
 
--- TODO: Renombrar y adaptar
-CREATE TABLE IF NOT EXISTS entities (
-    id          INTEGER PRIMARY KEY,
-    name        TEXT    NOT NULL
-    -- TODO: Agregar columnas relevantes con constraints
+CREATE TABLE IF NOT EXISTS events (
+    id              INTEGER PRIMARY KEY,
+    event_name      TEXT    NOT NULL,
+    event_date      TEXT    NOT NULL,
+    capacity        INTEGER CHECK(capacity > 0),
+    location        TEXT    NOT NULL
 );
 
 -- ============================================
 -- TABLA 3: Tercera entidad o tabla de relación
 -- ============================================
 
--- TODO: Crear la tercera tabla del dominio
--- Si es una tabla de relación, incluir dos FK
--- CREATE TABLE IF NOT EXISTS relations (
---     id         INTEGER PRIMARY KEY,
---     item_id    INTEGER NOT NULL,
---     entity_id  INTEGER NOT NULL,
---     FOREIGN KEY (item_id)   REFERENCES items(id),
---     FOREIGN KEY (entity_id) REFERENCES entities(id)
--- );
+CREATE TABLE IF NOT EXISTS fees (
+    id              INTEGER PRIMARY KEY,
+    member_id       INTEGER NOT NULL,
+    amount          REAL    NOT NULL CHECK(amount > 0),
+    payment_date    TEXT,
+    FOREIGN KEY (member_id)
+        REFERENCES members(id)
+);
+
+-- ============================================
+-- TABLA ADICIONAL: Instalaciones
+-- ============================================
+
+CREATE TABLE IF NOT EXISTS facilities (
+    id              INTEGER PRIMARY KEY,
+    facility_name   TEXT    NOT NULL UNIQUE,
+    capacity        INTEGER CHECK(capacity > 0),
+    available       INTEGER NOT NULL DEFAULT 1
+);
 
 -- ============================================
 -- VERIFICACIÓN
 -- ============================================
 
--- TODO: Descomentar para verificar estructura
 -- .tables
--- PRAGMA table_info(items);
--- PRAGMA table_info(entities);
+-- PRAGMA table_info(members);
+-- PRAGMA table_info(events);
+-- PRAGMA table_info(fees);
+-- PRAGMA table_info(facilities);

@@ -1,47 +1,54 @@
 -- ============================================
 -- PROYECTO SEMANAL: Operadores y Filtros
 -- Semana 05 — BETWEEN, IN, LIKE
+-- Dominio: Club Social
 -- ============================================
-
--- NOTA: Usa el esquema cargado en la Semana 03.
--- Adapta los nombres de tablas y columnas a tu dominio.
 
 -- ============================================
 -- CONSULTA 1: Filtro con BETWEEN
 -- ============================================
--- TODO: Filtra registros de tu entidad principal usando un rango
---       (precio, cantidad, fecha, id, etc.)
--- SELECT ...
--- FROM   tu_tabla
--- WHERE  columna_numerica BETWEEN valor_min AND valor_max;
 
+SELECT
+    id,
+    full_name,
+    age,
+    membership_type
+FROM members
+WHERE age BETWEEN 20 AND 30;
 
 -- ============================================
 -- CONSULTA 2: Filtro con IN
 -- ============================================
--- TODO: Filtra por una lista de categorías, estados o ids relevantes
--- SELECT ...
--- FROM   tu_tabla
--- WHERE  columna_categorica IN (valor1, valor2, valor3);
 
+SELECT
+    id,
+    full_name,
+    membership_type
+FROM members
+WHERE membership_type IN ('Premium', 'VIP');
 
 -- ============================================
 -- CONSULTA 3: Búsqueda de texto con LIKE
 -- ============================================
--- TODO: Busca registros cuyo nombre o descripción contenga un patrón
--- SELECT ...
--- FROM   tu_tabla
--- WHERE  columna_texto LIKE '%patron%';
 
+SELECT
+    id,
+    full_name,
+    email
+FROM members
+WHERE full_name LIKE '%a%';
 
 -- ============================================
 -- CONSULTA 4: Filtro combinado (≥ 3 operadores)
 -- ============================================
--- TODO: Combina BETWEEN, IN y/o LIKE con AND/OR
---       Usa paréntesis si mezclas AND y OR
--- SELECT ...
--- FROM   tu_tabla
--- WHERE  condicion1
---   AND  condicion2
---   AND  condicion3
--- ORDER BY columna_relevante;
+
+SELECT
+    id,
+    full_name,
+    age,
+    membership_type
+FROM members
+WHERE age BETWEEN 20 AND 35
+  AND membership_type IN ('Premium', 'VIP')
+  AND full_name LIKE '%a%'
+ORDER BY full_name;
